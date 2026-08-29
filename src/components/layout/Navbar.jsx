@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {Button} from "../ui/button"
 import { logout } from "../../features/auth/authSlice";
 import { cn } from "../../lib/utils";
-import codingLogo from "../../assets/coding.png"
+import codingLogo from "../../assets/social.png"
 
 
 const navItems = [
@@ -33,9 +33,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-ink/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight text-fog">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-cyan/10 text-cyan">
-            <img src={codingLogo} className="w-14" alt="" />
+        <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
+          <span className="flex h-8 w-8 items-center justify-center rounded-md">
+            <img src={codingLogo} className="w-14 bg-white rounded-md" alt="" />
           </span>
           Coding<span className="text-cyan">Campus</span>
         </Link>

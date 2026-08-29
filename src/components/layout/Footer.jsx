@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="flex h-8 w-8 items-center justify-center rounded-md bg-cyan/10 text-cyan">
                 <FiTerminal size={18} />
               </span>
-              Code<span className="text-cyan">Forge</span>
+              Coding<span className="text-cyan">Campus</span>
             </Link>
             <p className="mt-3 max-w-xs text-sm text-mist">
               Hands-on courses in the languages, frameworks, and libraries behind real products.

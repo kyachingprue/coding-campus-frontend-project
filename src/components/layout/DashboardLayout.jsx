@@ -3,10 +3,11 @@ import { NavLink, Outlet, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  FiGrid, FiUser, FiCreditCard, FiSettings, FiLogOut, FiMenu, FiX, FiTerminal,
+  FiGrid, FiUser, FiCreditCard, FiSettings, FiLogOut, FiMenu, FiX,
 } from "react-icons/fi";
 import { logout } from "../../features/auth/authSlice";
 import { cn } from "../../lib/utils";
+import logo from "../../assets/social.png"
 
 
 const links = [
@@ -31,9 +32,9 @@ export default function DashboardLayout() {
     <div className="flex h-full flex-col">
       <Link to="/" className="flex items-center gap-2 px-5 py-5 font-display text-lg font-semibold text-fog">
         <span className="flex h-8 w-8 items-center justify-center rounded-md bg-cyan/10 text-cyan">
-          <FiTerminal size={18} />
+          <img src={logo} className="w-full h-full rounded-md bg-white" alt="" />
         </span>
-        Code<span className="text-cyan">Forge</span>
+        Coding<span className="text-cyan">Campus</span>
       </Link>
 
       <nav className="flex-1 space-y-1 px-3">
