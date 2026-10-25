@@ -12,7 +12,7 @@ import logo from "../../assets/social.png";
 import { useTheme } from "../../app/useTheme";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import type { Theme } from "../../app/theme-context";
-import { apiRequest, API_ORIGIN } from "../../lib/api";
+import { apiRequest, SOCKET_URL } from "../../lib/api";
 import toast from "react-hot-toast";
 
 interface StudentNotification {
@@ -97,8 +97,8 @@ export default function DashboardLayout() {
 
     void loadNotifications();
     const interval = window.setInterval(() => { void loadNotifications(); }, 60_000);
-    const socket = io(API_ORIGIN, { withCredentials: true });
-    socket.on("enrollment:created", (enrollment: EnrollmentCreated) => {
+    const socket = SOCKET_URL ? io(SOCKET_URL, { withCredentials: true }) : undefined;
+    socket?.on("enrollment:created", (enrollment: EnrollmentCreated) => {
       if (!active) return;
       const notification: StudentNotification = {
         id: `${enrollment.courseId}-${enrollment.enrolledAt}`,
@@ -110,13 +110,10 @@ export default function DashboardLayout() {
       setNotifications((current) => [notification, ...current.filter((item) => item.id !== notification.id)].slice(0, 8));
       toast.success(`${enrollment.courseName} is now in your learning library.`);
     });
-    socket.on("connect_error", (socketError: Error) => {
-      if (active) toast.error(`Live notifications unavailable: ${socketError.message}`);
-    });
     return () => {
       active = false;
       window.clearInterval(interval);
-      socket.disconnect();
+      socket?.disconnect();
     };
   }, [user?.id]);
 

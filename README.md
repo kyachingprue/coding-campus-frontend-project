@@ -11,6 +11,10 @@ npm run dev
 
 Set `VITE_API_URL` in `.env` to the backend API URL, for example
 `http://localhost:5000/api`. Restart Vite after changing environment values.
+`VITE_SOCKET_URL` is optional and should only be set when using a backend host
+that supports persistent Socket.IO connections. Vercel serverless functions do
+not provide a persistent Socket.IO server; without this value, dashboard
+notifications and learning enrollments refresh through the API instead.
 
 ## Validation
 

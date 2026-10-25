@@ -2,6 +2,7 @@ import type { User } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 export const API_ORIGIN = new URL(API_URL).origin;
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 export function resolveMediaUrl(url: string): string {
   return new URL(url, API_ORIGIN).toString();

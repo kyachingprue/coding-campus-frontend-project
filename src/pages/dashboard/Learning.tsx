@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { FiBookOpen, FiPlay, FiSearch, FiVideo } from "react-icons/fi";
 import { io } from "socket.io-client";
-import { API_ORIGIN, apiRequest } from "../../lib/api";
+import { apiRequest, SOCKET_URL } from "../../lib/api";
 import { setEnrolledIds } from "../../features/courses/coursesSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -42,7 +42,6 @@ export default function Learning() {
     let active = true;
 
     async function loadEnrollments() {
-      setLoading(true);
       try {
         const sessionId = searchParams.get("session_id");
         if (sessionId) {
@@ -65,12 +64,20 @@ export default function Learning() {
     }
 
     void loadEnrollments();
-    return () => { active = false; };
+    const interval = window.setInterval(() => { void loadEnrollments(); }, 60_000);
+    const handleFocus = () => { void loadEnrollments(); };
+    window.addEventListener("focus", handleFocus);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+    };
   }, [dispatch, searchParams, userId]);
 
   useEffect(() => {
     if (!userId) return undefined;
-    const socket = io(API_ORIGIN, { withCredentials: true });
+    if (!SOCKET_URL) return undefined;
+    const socket = io(SOCKET_URL, { withCredentials: true });
     socket.on("enrollment:created", async (enrollment: { courseId: string; courseName: string }) => {
       setPaymentMessage(`Payment successful! You are enrolled in ${enrollment.courseName}.`);
       try {
@@ -81,7 +88,6 @@ export default function Learning() {
         setLoadError(requestError instanceof Error ? requestError.message : "Unable to refresh your course library.");
       }
     });
-    socket.on("connect_error", (error) => setLoadError(error.message));
     return () => { socket.disconnect(); };
   }, [dispatch, userId]);
 
