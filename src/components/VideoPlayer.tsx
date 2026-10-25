@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { FiMaximize2, FiMinimize2, FiPause, FiPlay, FiVolume2, FiVolumeX } from "react-icons/fi";
 
+interface ScreenOrientationWithLock extends ScreenOrientation {
+  lock?: (orientation: "portrait") => Promise<void>;
+}
+
 interface VideoPlayerProps {
   src: string;
   title: string;
@@ -63,18 +67,37 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
     setMuted(video.muted);
   }
 
-  function toggleFullscreen() {
+  async function toggleFullscreen() {
     const container = containerRef.current;
     if (!container) return;
-    if (document.fullscreenElement) {
-      void document.exitFullscreen().catch(() => setPlayerError("Fullscreen is unavailable in this browser."));
-    } else {
-      void container.requestFullscreen().catch(() => setPlayerError("Fullscreen is unavailable in this browser."));
+
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+        screen.orientation.unlock();
+        return;
+      }
+
+      await container.requestFullscreen();
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        try {
+          const orientation = screen.orientation as ScreenOrientationWithLock;
+          if (!orientation.lock) {
+            setPlayerError("Portrait fullscreen is not supported by this browser.");
+            return;
+          }
+          await orientation.lock("portrait");
+        } catch {
+          setPlayerError("Your browser could not lock the screen to portrait while fullscreen.");
+        }
+      }
+    } catch {
+      setPlayerError("Fullscreen is unavailable in this browser.");
     }
   }
 
   return (
-    <div ref={containerRef} className="group relative aspect-video overflow-hidden bg-black text-white">
+    <div ref={containerRef} className="video-player group relative aspect-video overflow-hidden bg-black text-white">
       <video
         ref={videoRef}
         key={src}
@@ -102,16 +125,22 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
           onProgress?.(time, event.currentTarget.duration);
         }}
         onEnded={(event) => onEnded?.(event.currentTarget.currentTime, event.currentTarget.duration)}
-        onClick={togglePlayback}
-        className="h-full w-full object-contain"
+        onClick={(event) => {
+          event.stopPropagation();
+          togglePlayback();
+        }}
+        className="relative z-0 h-full w-full object-contain"
       />
 
       {!playing && (
         <button
           type="button"
-          onClick={togglePlayback}
+          onClick={(event) => {
+            event.stopPropagation();
+            togglePlayback();
+          }}
           aria-label={`Play ${title}`}
-          className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-cyan hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
+          className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 touch-manipulation items-center justify-center rounded-full border border-white/20 bg-black/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-cyan hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan sm:h-12 sm:w-12"
         >
           <FiPlay size={20} />
         </button>
@@ -119,7 +148,7 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
 
       {playerError && <p role="alert" className="absolute left-3 right-3 top-3 rounded-lg bg-black/75 px-3 py-2 text-center text-xs text-white">{playerError}</p>}
 
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-2 pt-8 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+      <div className="video-player-controls absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-2 pt-8 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
         <input
           type="range"
           min={0}

@@ -104,7 +104,7 @@ export default function Navbar() {
           <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md">
             <img src={codingLogo} className="h-8 w-8 rounded-md bg-white object-cover" alt="" />
           </span>
-          <span className="truncate whitespace-nowrap">Coding<span className="text-cyan">Campus</span></span>
+          <span className="hidden truncate whitespace-nowrap sm:inline">Coding<span className="text-cyan">Campus</span></span>
           </Link>
         </div>
 

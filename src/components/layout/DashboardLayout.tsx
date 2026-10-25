@@ -253,14 +253,14 @@ export default function DashboardLayout() {
               <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1">
                 <img src={logo} className="h-full w-full rounded-md object-cover" alt="" />
               </span>
-              <span className="truncate font-display text-base font-semibold tracking-tight text-fog sm:text-lg">
+              <span className="hidden truncate font-display text-base font-semibold tracking-tight text-fog sm:inline sm:text-lg">
                 Coding <span className="text-cyan">Campus</span>
               </span>
             </Link>
           </div>
 
           <div className="flex items-center gap-1 sm:gap-2">
-            <div className="relative">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:static sm:translate-x-0 sm:translate-y-0">
               <button
                 onClick={toggleNotifications}
                 className="relative flex h-10 w-10 items-center justify-center rounded-xl text-mist transition-colors hover:bg-surface-2 hover:text-fog"
@@ -276,7 +276,7 @@ export default function DashboardLayout() {
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    className="absolute right-0 z-30 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
+                    className="absolute left-1/2 z-30 mt-2 w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl sm:left-auto sm:right-0 sm:translate-x-0"
                   >
                     <div className="flex items-center justify-between border-b border-line px-4 py-3"><div><p className="text-sm font-semibold text-fog">Notifications</p><p className="text-xs text-mist">{unreadCount ? `${unreadCount} new course update${unreadCount === 1 ? "" : "s"}` : "You're all caught up"}</p></div><Link to="/dashboard/learning" onClick={() => setNotificationsOpen(false)} className="text-xs font-medium text-cyan hover:underline">My Learning</Link></div>
                     {notificationError && <p role="alert" className="border-b border-line px-4 py-3 text-xs text-coral">{notificationError}</p>}
