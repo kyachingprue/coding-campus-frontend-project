@@ -1,11 +1,14 @@
 import type { User } from "./types";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-export const API_ORIGIN = new URL(API_URL).origin;
+const API_URL = import.meta.env.PROD
+  ? "/api"
+  : import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE_URL = new URL(API_URL, window.location.origin);
+export const API_ORIGIN = API_BASE_URL.origin;
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 export function resolveMediaUrl(url: string): string {
-  return new URL(url, API_ORIGIN).toString();
+  return new URL(url, API_BASE_URL).toString();
 }
 
 export async function apiRequest<T = unknown>(

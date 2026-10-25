@@ -15,6 +15,8 @@ Set `VITE_API_URL` in `.env` to the backend API URL, for example
 that supports persistent Socket.IO connections. Vercel serverless functions do
 not provide a persistent Socket.IO server; without this value, dashboard
 notifications and learning enrollments refresh through the API instead.
+Production builds use the same-origin `/api` path so authentication cookies work
+reliably. `frontend/vercel.json` rewrites that path to the deployed backend.
 
 ## Validation
 
