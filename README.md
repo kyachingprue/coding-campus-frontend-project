@@ -1,16 +1,35 @@
-# React + Vite
+# Code Campus frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The React application is written in TypeScript and built with Vite.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```powershell
+npm install
+npm run dev
+```
 
-## React Compiler
+Set `VITE_API_URL` in `.env` to the backend API URL, for example
+`http://localhost:5000/api`. Restart Vite after changing environment values.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Validation
 
-## Expanding the ESLint configuration
+```powershell
+npm run typecheck
+npm run build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Application source is under `src/` and uses `.ts` and `.tsx` files. Vite
+configuration and TypeScript compiler settings are maintained at the project
+root.
+
+Signed-in dashboards are role-based: students use `/dashboard`, instructors use
+`/instructor/dashboard`, and admins use `/admin/dashboard`. Admin sections are
+available at `/admin/students`, `/admin/instructors`, `/admin/courses`,
+`/admin/analytics`, `/admin/payments`, and `/admin/settings`.
+
+Instructor sections are available at `/instructor/courses`,
+`/instructor/courses/create`, `/instructor/payments`, `/instructor/analytics`,
+`/instructor/profile`, and `/instructor/settings`. Course video lessons are
+uploaded to Cloudinary and are playable from an enrolled student's
+`/dashboard/learning/:courseId` page.
