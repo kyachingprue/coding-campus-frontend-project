@@ -19,6 +19,56 @@
   --color-violet: #8b7cf6;
 }
 
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #eaf0f6;
+  --color-line: #d5dfeb;
+  --color-fog: #17263a;
+  --color-mist: #5b6d83;
+  --color-cyan: #087c72;
+  --color-cyan-dim: #06685f;
+  --color-amber: #a85b08;
+  --color-coral: #d64545;
+  --color-violet: #6254c7;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-ink: #050505;
+  --color-surface: #0e0e0e;
+  --color-surface-2: #191919;
+  --color-line: #2b2b2b;
+  --color-fog: #ffffff;
+  --color-mist: #a3a3a3;
+  --color-cyan: #35d8c3;
+  --color-cyan-dim: #16b8a4;
+  --color-amber: #ffc274;
+  --color-coral: #ff8585;
+  --color-violet: #a496ff;
+}
+
+:root[data-theme="system"] {
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    --color-ink: #f4f7fb;
+    --color-surface: #ffffff;
+    --color-surface-2: #eaf0f6;
+    --color-line: #d5dfeb;
+    --color-fog: #17263a;
+    --color-mist: #5b6d83;
+    --color-cyan: #087c72;
+    --color-cyan-dim: #06685f;
+    --color-amber: #a85b08;
+    --color-coral: #d64545;
+    --color-violet: #6254c7;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -30,9 +80,98 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.theme-select {
+  color-scheme: inherit;
+  accent-color: var(--color-cyan);
+}
+
+.theme-select option {
+  background-color: var(--color-surface);
+  color: var(--color-fog);
+}
+
+:root[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(0, 217, 192, 0.08), transparent 44rem),
+    linear-gradient(180deg, #050505 0%, #090909 55%, #050505 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] body {
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(0, 217, 192, 0.08), transparent 44rem),
+      linear-gradient(180deg, #050505 0%, #090909 55%, #050505 100%);
+  }
+
+  :root[data-theme="system"] {
+    --color-ink: #050505;
+    --color-surface: #0e0e0e;
+    --color-surface-2: #191919;
+    --color-line: #2b2b2b;
+    --color-fog: #ffffff;
+    --color-mist: #a3a3a3;
+    --color-cyan: #35d8c3;
+    --color-cyan-dim: #16b8a4;
+    --color-amber: #ffc274;
+    --color-coral: #ff8585;
+    --color-violet: #a496ff;
+  }
+}
+
 ::selection {
   background: var(--color-cyan);
   color: var(--color-ink);
+}
+
+.role-signout-button {
+  border-color: #fecdd3;
+  background: linear-gradient(115deg, #fff1f2 0%, #fce7f3 52%, #ede9fe 100%);
+  color: #9f1239;
+  box-shadow: 0 4px 14px rgba(190, 24, 93, 0.08);
+}
+
+.role-signout-button:hover {
+  border-color: #fda4af;
+  background: linear-gradient(115deg, #ffe4e6 0%, #fbcfe8 52%, #ddd6fe 100%);
+  box-shadow: 0 8px 22px rgba(190, 24, 93, 0.14);
+  transform: translateY(-1px);
+}
+
+.role-signout-button:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.role-signout-button:active {
+  transform: scale(0.98);
+}
+
+:root[data-theme="dark"] .role-signout-button {
+  border-color: rgba(251, 113, 133, 0.28);
+  background: linear-gradient(115deg, rgba(159, 18, 57, 0.3), rgba(190, 24, 93, 0.2) 52%, rgba(109, 40, 217, 0.22));
+  color: #fecdd3;
+  box-shadow: 0 4px 18px rgba(76, 5, 25, 0.24);
+}
+
+:root[data-theme="dark"] .role-signout-button:hover {
+  border-color: rgba(251, 113, 133, 0.5);
+  background: linear-gradient(115deg, rgba(159, 18, 57, 0.45), rgba(190, 24, 93, 0.32) 52%, rgba(109, 40, 217, 0.34));
+  box-shadow: 0 8px 24px rgba(76, 5, 25, 0.34);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] .role-signout-button {
+    border-color: rgba(251, 113, 133, 0.28);
+    background: linear-gradient(115deg, rgba(159, 18, 57, 0.3), rgba(190, 24, 93, 0.2) 52%, rgba(109, 40, 217, 0.22));
+    color: #fecdd3;
+    box-shadow: 0 4px 18px rgba(76, 5, 25, 0.24);
+  }
+
+  :root[data-theme="system"] .role-signout-button:hover {
+    border-color: rgba(251, 113, 133, 0.5);
+    background: linear-gradient(115deg, rgba(159, 18, 57, 0.45), rgba(190, 24, 93, 0.32) 52%, rgba(109, 40, 217, 0.34));
+    box-shadow: 0 8px 24px rgba(76, 5, 25, 0.34);
+  }
 }
 
 /* subtle code-grid backdrop used on hero/auth screens */
@@ -43,6 +182,30 @@ body {
   background-size: 42px 42px;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+:root[data-theme="light"] .grid-fade {
+  background-image:
+    linear-gradient(to right, rgba(23,38,58,0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(23,38,58,0.045) 1px, transparent 1px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] .grid-fade {
+    background-image:
+      linear-gradient(to right, rgba(23,38,58,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(23,38,58,0.045) 1px, transparent 1px);
+  }
+}
+
+:root[data-theme="light"] body {
+  background-image: radial-gradient(ellipse at 50% 0%, rgba(8,124,114,0.045), transparent 48rem);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] body {
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(8,124,114,0.045), transparent 48rem);
+  }
 }
 
 .text-glow {
