@@ -80,6 +80,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.coding-campus-toast {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(14px);
+}
+
 .theme-select {
   color-scheme: inherit;
   accent-color: var(--color-cyan);

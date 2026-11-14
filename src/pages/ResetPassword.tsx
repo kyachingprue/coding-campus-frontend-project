@@ -6,6 +6,7 @@ import { authSuccess } from "../features/auth/authSlice";
 import { apiRequest } from "../lib/api";
 import { Button } from "../components/ui/button";
 import { Input, Label } from "../components/ui/input";
+import toast from "react-hot-toast";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -26,9 +27,12 @@ export default function ResetPassword() {
         body: JSON.stringify({ token, password }),
       });
       dispatch(authSuccess(user));
+      toast.success("Your password has been updated.");
       navigate("/dashboard", { replace: true });
     } catch (requestError: unknown) {
-      setError(requestError instanceof Error ? requestError.message : "Unable to reset your password.");
+      const errorMessage = requestError instanceof Error ? requestError.message : "Unable to reset your password.";
+      setError(errorMessage);
+      toast.error(errorMessage);
       setSaving(false);
     }
   }

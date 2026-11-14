@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import { Button } from "../../../components/ui/button";
 import { apiRequest } from "../../../lib/api";
+import toast from "react-hot-toast";
 import {
   countUploadedVideos,
   DashboardMessage,
@@ -44,8 +45,11 @@ export default function InstructorCourses() {
         method: "PATCH",
       });
       await reload();
+      toast.success(`Course ${published ? "moved to drafts" : "published"} successfully.`);
     } catch (requestError: unknown) {
-      setActionError(requestError instanceof Error ? requestError.message : "Unable to update this course.");
+      const message = requestError instanceof Error ? requestError.message : "Unable to update this course.";
+      setActionError(message);
+      toast.error(message);
     } finally {
       setBusyCourseId("");
     }
@@ -58,8 +62,11 @@ export default function InstructorCourses() {
     try {
       await apiRequest(`/courses/${encodeURIComponent(courseId)}`, { method: "DELETE" });
       await reload();
+      toast.success(`${name} was removed from your courses.`);
     } catch (requestError: unknown) {
-      setActionError(requestError instanceof Error ? requestError.message : "Unable to remove this course.");
+      const message = requestError instanceof Error ? requestError.message : "Unable to remove this course.";
+      setActionError(message);
+      toast.error(message);
     } finally {
       setBusyCourseId("");
     }

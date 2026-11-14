@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 import { useAppSelector } from "../../app/hooks";
 import CourseCard from "../../components/CourseCard";
+import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest } from "../../lib/api";
 import type { Course, CourseLevel } from "../../lib/types";
 import { courseCategories } from "../../lib/courseCategories";
@@ -245,9 +246,7 @@ export default function Overview() {
 
         {error && <p role="alert" className="mt-5 rounded-xl border border-coral/30 bg-coral/10 p-4 text-sm text-coral">{error}</p>}
         {loading ? (
-          <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 3 }, (_, index) => <div key={index} className="h-72 animate-pulse rounded-2xl border border-line bg-surface" />)}
-          </div>
+          <div className="mt-5"><LoadingState label="Loading the course catalog..." /></div>
         ) : filteredCourses.length ? (
           <div className="mt-5 space-y-8">
             {categoryGroups.map(({ category: groupName, courses: groupCourses }) => (

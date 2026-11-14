@@ -16,6 +16,7 @@ import {
 import { Button } from "../../components/ui/button";
 import { saveQuizAttempt, setEnrolledIds, togglePracticeTask } from "../../features/courses/coursesSlice";
 import { apiRequest } from "../../lib/api";
+import LoadingState from "../../components/ui/LoadingState";
 import type { CourseLevel } from "../../lib/types";
 
 interface PracticeCourse {
@@ -185,7 +186,7 @@ export default function Practice() {
     }
 
     if (loading) {
-      return <p className="rounded-2xl border border-line bg-surface p-8 text-center text-sm text-mist">Loading your practice courses…</p>;
+      return <LoadingState label="Loading your practice courses..." />;
     }
 
     if (loadError) {

@@ -8,6 +8,7 @@ import { Input, Label } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { isStrongPassword, PasswordField } from "../components/auth/PasswordField";
 import { apiRequest } from "../lib/api";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -26,11 +27,19 @@ export default function Register() {
       if (res.ok) {
         setVerificationStep(true);
         setResendMessage("Your verification code is on its way.");
+        toast.success("Verification code sent. Check your inbox.");
+      } else {
+        toast.error("Unable to create your account. Check the message above.");
       }
       return;
     }
     const res = await dispatch(verifyRegistrationCode({ email: form.email, code }));
-    if (res.ok) navigate("/dashboard", { replace: true });
+    if (res.ok) {
+      toast.success("Your account is ready. Welcome to Coding Campus!");
+      navigate("/dashboard", { replace: true });
+    } else {
+      toast.error("Unable to verify your email. Check the message above.");
+    }
   }
 
   async function resendCode() {
@@ -42,8 +51,11 @@ export default function Register() {
         body: JSON.stringify({ email: form.email }),
       });
       setResendMessage(message);
+      toast.success(message || "A new verification code has been sent.");
     } catch (requestError: unknown) {
-      setResendMessage(requestError instanceof Error ? requestError.message : "Unable to resend your code.");
+      const errorMessage = requestError instanceof Error ? requestError.message : "Unable to resend your code.";
+      setResendMessage(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setResending(false);
     }

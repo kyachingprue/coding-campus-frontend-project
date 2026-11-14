@@ -9,6 +9,7 @@ import {
   FiShield,
 } from "react-icons/fi";
 import { Button } from "../../components/ui/button";
+import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest } from "../../lib/api";
 import { useAppSelector } from "../../app/hooks";
 import type { ServerCourse } from "../../lib/types";
@@ -46,6 +47,10 @@ export default function Checkout() {
     void loadCourse(controller.signal);
     return () => controller.abort();
   }, [loadCourse]);
+
+  if (loadingCourse && !serverCourse) {
+    return <LoadingState label="Preparing your secure checkout..." />;
+  }
 
   if (!serverCourse && !loadingCourse && !error) {
     return (

@@ -15,6 +15,7 @@ import {
   FiZap,
 } from "react-icons/fi";
 import { Card, CardContent } from "../../components/ui/card";
+import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest } from "../../lib/api";
 import type { IconType } from "react-icons";
 import type { PaymentRecord } from "../../lib/types";
@@ -72,6 +73,7 @@ export default function Billing() {
   const [filter, setFilter] = useState("all");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loadError, setLoadError] = useState("");
+  const [loading, setLoading] = useState(true);
   const plan = user?.plan || "Starter";
   const totalSpent = invoices
     .filter((invoice) => invoice.status === "Paid")
@@ -92,6 +94,9 @@ export default function Billing() {
       })
       .catch((error) => {
         if (active) setLoadError(error.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => { active = false; };
   }, []);
@@ -187,7 +192,11 @@ export default function Billing() {
         </div>
 
         <Card className="overflow-hidden">
-          {visibleInvoices.length ? (
+          {loading ? (
+            <CardContent className="p-5">
+              <LoadingState label="Loading your billing history..." />
+            </CardContent>
+          ) : visibleInvoices.length ? (
             <>
               <div className="hidden overflow-x-auto sm:block">
                 <table className="w-full min-w-[620px] text-left text-sm">

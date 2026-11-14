@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, type ComponentType } from "react";
 import { apiRequest } from "../../../lib/api";
+import LoadingState from "../../../components/ui/LoadingState";
 
 export interface InstructorLesson {
   _id?: string;
@@ -181,6 +182,6 @@ export function DashboardMessage({
   loading: boolean;
 }) {
   if (error) return <p role="alert" className="rounded-xl border border-coral/30 bg-coral/10 p-4 text-sm text-coral">{error}</p>;
-  if (loading) return <p className="rounded-xl border border-line bg-surface p-6 text-sm text-mist">Loading your instructor workspace…</p>;
+  if (loading) return <LoadingState label="Loading your instructor workspace..." />;
   return null;
 }

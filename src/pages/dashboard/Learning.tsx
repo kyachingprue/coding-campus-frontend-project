@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { apiRequest, SOCKET_URL } from "../../lib/api";
 import { setEnrolledIds } from "../../features/courses/coursesSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import LoadingState from "../../components/ui/LoadingState";
 
 interface LearningCourse {
   courseId: string;
@@ -107,7 +108,7 @@ export default function Learning() {
       {paymentMessage && <div role="status" className="rounded-xl border border-cyan/25 bg-cyan/10 px-4 py-3 text-sm text-fog">{paymentMessage}</div>}
       {loadError && <p role="alert" className="rounded-xl border border-coral/25 bg-coral/10 px-4 py-3 text-sm text-coral">{loadError}</p>}
       {loading ? (
-        <p className="rounded-2xl border border-line bg-surface p-8 text-center text-sm text-mist">Loading your course library…</p>
+        <LoadingState label="Loading your course library..." />
       ) : courses.length ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {courses.map((course) => {

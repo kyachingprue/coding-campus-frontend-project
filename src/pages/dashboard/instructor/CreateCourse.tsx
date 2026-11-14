@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "
 import { Link, useSearchParams } from "react-router-dom";
 import { FiArrowLeft, FiCheck, FiChevronDown, FiChevronUp, FiPlus, FiTrash2, FiUploadCloud, FiVideo } from "react-icons/fi";
 import { Button } from "../../../components/ui/button";
+import LoadingState from "../../../components/ui/LoadingState";
 import { apiRequest, uploadRequest } from "../../../lib/api";
+import toast from "react-hot-toast";
 import { courseCategories } from "../../../lib/courseCategories";
 import type { InstructorCourse } from "./shared";
 
@@ -199,9 +201,12 @@ export default function CreateCourse() {
     setBusy(false);
     setProgress("");
     if (failures.length) {
-      setError(`Your draft was saved, but some uploads need attention: ${failures.join(" · ")}`);
+      const message = `Your draft was saved, but some uploads need attention: ${failures.join(" · ")}`;
+      setError(message);
+      toast.error("Draft saved, but some uploads need attention.");
     } else {
       setNotice("Draft saved. Google Drive video links are ready for review.");
+      toast.success(editingId ? "Course changes saved successfully." : "Course draft created successfully.");
     }
   }
 
@@ -309,7 +314,7 @@ export default function CreateCourse() {
           <div className="flex shrink-0 items-center gap-2 text-xs text-mist"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-cyan/10 font-semibold text-cyan">1</span> Details <span className="h-px w-5 bg-line" /><span className="flex h-7 w-7 items-center justify-center rounded-full bg-surface-2 font-semibold">2</span> Curriculum</div>
         </div>
       </header>
-      {loadingEdit && <p role="status" className="rounded-xl border border-line bg-surface p-4 text-sm text-mist">Loading the selected course…</p>}
+      {loadingEdit && <LoadingState label="Loading the selected course..." />}
       {error && <p role="alert" className="rounded-xl border border-coral/30 bg-coral/10 p-4 text-sm leading-relaxed text-coral">{error}</p>}
       {notice && <p role="status" className="rounded-xl border border-cyan/25 bg-cyan/10 p-4 text-sm leading-relaxed text-cyan">{notice}</p>}
       {createdCourse && <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3"><span className="inline-flex items-center gap-2 text-sm text-fog"><FiCheck className="text-cyan" /> Draft saved: <strong>{createdCourse.name}</strong></span><Link to={`/instructor/courses/${encodeURIComponent(createdCourse._id)}/preview`} className="text-sm font-semibold text-cyan hover:underline">Preview draft</Link></div>}

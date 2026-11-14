@@ -45,6 +45,7 @@ import type { CourseEnrollment } from "./lib/types";
 import { Toaster } from "react-hot-toast";
 import RouteTitle from "./components/RouteTitle";
 import PwaInstallPrompt from "./components/PwaInstallPrompt";
+import LoadingState from "./components/ui/LoadingState";
 
 
 export default function App() {
@@ -72,13 +73,18 @@ export default function App() {
         position="top-right"
         toastOptions={{
           duration: 4000,
+          className: "coding-campus-toast",
           style: {
             background: "var(--color-surface)",
             color: "var(--color-fog)",
             border: "1px solid var(--color-line)",
+            borderRadius: "14px",
+            padding: "14px 16px",
+            boxShadow: "0 16px 40px rgba(0, 0, 0, 0.22)",
           },
           success: { iconTheme: { primary: "var(--color-cyan)", secondary: "var(--color-surface)" } },
           error: { iconTheme: { primary: "var(--color-coral)", secondary: "var(--color-surface)" } },
+          loading: { iconTheme: { primary: "var(--color-cyan)", secondary: "var(--color-surface)" } },
         }}
       />
       <RouteTitle />
@@ -115,14 +121,14 @@ export default function App() {
       <Route element={<ProtectedRoute roles={["instructor"]} />}>
         <Route path="/instructor" element={<RoleDashboardLayout role="instructor" />}>
           <Route index element={<Navigate to="/instructor/dashboard" replace />} />
-          <Route path="dashboard" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading instructor overview…</div>}><InstructorOverview /></Suspense>} />
-          <Route path="courses" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading courses…</div>}><InstructorCourses /></Suspense>} />
-          <Route path="courses/create" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading course builder…</div>}><InstructorCreateCourse /></Suspense>} />
+          <Route path="dashboard" element={<Suspense fallback={<LoadingState label="Loading instructor overview..." />}><InstructorOverview /></Suspense>} />
+          <Route path="courses" element={<Suspense fallback={<LoadingState label="Loading your courses..." />}><InstructorCourses /></Suspense>} />
+          <Route path="courses/create" element={<Suspense fallback={<LoadingState label="Opening the course builder..." />}><InstructorCreateCourse /></Suspense>} />
           <Route path="courses/:id/preview" element={<CoursePreview />} />
-          <Route path="payments" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading payments…</div>}><InstructorPayments /></Suspense>} />
-          <Route path="analytics" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading analytics…</div>}><InstructorAnalytics /></Suspense>} />
-          <Route path="profile" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading profile…</div>}><InstructorProfile /></Suspense>} />
-          <Route path="settings" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading settings…</div>}><InstructorSettings /></Suspense>} />
+          <Route path="payments" element={<Suspense fallback={<LoadingState label="Loading payments..." />}><InstructorPayments /></Suspense>} />
+          <Route path="analytics" element={<Suspense fallback={<LoadingState label="Loading analytics..." />}><InstructorAnalytics /></Suspense>} />
+          <Route path="profile" element={<Suspense fallback={<LoadingState label="Loading your profile..." />}><InstructorProfile /></Suspense>} />
+          <Route path="settings" element={<Suspense fallback={<LoadingState label="Loading settings..." />}><InstructorSettings /></Suspense>} />
           <Route path="*" element={<Navigate to="/instructor/dashboard" replace />} />
         </Route>
       </Route>
@@ -130,13 +136,13 @@ export default function App() {
       <Route element={<ProtectedRoute roles={["admin"]} />}>
         <Route path="/admin" element={<RoleDashboardLayout role="admin" />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading overview...</div>}><AdminOverviewPage /></Suspense>} />
-          <Route path="students" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading students...</div>}><AdminStudentsPage /></Suspense>} />
-          <Route path="instructors" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading instructors...</div>}><AdminInstructorsPage /></Suspense>} />
-          <Route path="courses" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading courses...</div>}><AdminCoursesPage /></Suspense>} />
-          <Route path="analytics" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading analytics...</div>}><AdminAnalyticsPage /></Suspense>} />
-          <Route path="payments" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading payments...</div>}><AdminPaymentsPage /></Suspense>} />
-          <Route path="settings" element={<Suspense fallback={<div className="p-8 text-center text-sm text-mist">Loading settings...</div>}><AdminSettingsPage /></Suspense>} />
+          <Route path="dashboard" element={<Suspense fallback={<LoadingState label="Loading the platform overview..." />}><AdminOverviewPage /></Suspense>} />
+          <Route path="students" element={<Suspense fallback={<LoadingState label="Loading student records..." />}><AdminStudentsPage /></Suspense>} />
+          <Route path="instructors" element={<Suspense fallback={<LoadingState label="Loading instructor records..." />}><AdminInstructorsPage /></Suspense>} />
+          <Route path="courses" element={<Suspense fallback={<LoadingState label="Loading course catalog..." />}><AdminCoursesPage /></Suspense>} />
+          <Route path="analytics" element={<Suspense fallback={<LoadingState label="Loading platform analytics..." />}><AdminAnalyticsPage /></Suspense>} />
+          <Route path="payments" element={<Suspense fallback={<LoadingState label="Loading payment records..." />}><AdminPaymentsPage /></Suspense>} />
+          <Route path="settings" element={<Suspense fallback={<LoadingState label="Loading platform settings..." />}><AdminSettingsPage /></Suspense>} />
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<Navigate to="/admin/students" replace />} />
           <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />

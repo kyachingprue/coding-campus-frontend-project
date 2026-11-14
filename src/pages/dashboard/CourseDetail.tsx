@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiBookOpen, FiCheck, FiChevronLeft, FiChevronRight, FiLock, FiPlay, FiVideo } from "react-icons/fi";
 import VideoPlayer from "../../components/VideoPlayer";
+import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest, resolveMediaUrl } from "../../lib/api";
 
 interface CourseLesson {
@@ -151,7 +152,7 @@ export default function CourseDetail() {
     setProgressError("");
   }
 
-  if (loading) return <p className="rounded-2xl border border-line bg-surface p-8 text-center text-sm text-mist">Loading course content…</p>;
+  if (loading) return <LoadingState label="Loading course content..." />;
   if (!course) {
     return <div className="rounded-2xl border border-line bg-surface p-8 text-center"><h1 className="font-display text-xl font-semibold text-fog">Course content unavailable</h1><p role="alert" className="mt-2 text-sm text-coral">{error}</p><Link to="/dashboard/learning" className="mt-5 inline-flex text-sm text-cyan hover:underline"><FiArrowLeft className="mr-2" /> Back to My Learning</Link></div>;
   }

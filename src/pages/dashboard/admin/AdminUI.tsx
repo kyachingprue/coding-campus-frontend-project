@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { IconType } from "react-icons";
 import { FiDownload, FiRefreshCw, FiSearch } from "react-icons/fi";
 import { Button } from "../../../components/ui/button";
+import LoadingState from "../../../components/ui/LoadingState";
 
 export const panelClass = "rounded-2xl border border-line bg-surface p-5 sm:p-6";
 export const tableCellClass = "px-4 py-3 text-left text-sm";
@@ -39,7 +40,7 @@ export function AdminFeedback({ error, notice }: { error?: string; notice?: stri
 }
 
 export function AdminLoading({ label = "Loading live data..." }: { label?: string }) {
-  return <div className="animate-pulse rounded-2xl border border-line bg-surface p-8 text-center text-sm text-mist">{label}</div>;
+  return <LoadingState label={label} />;
 }
 
 export function AdminMetric({ label, value, icon: Icon, tone = "cyan", detail }: {

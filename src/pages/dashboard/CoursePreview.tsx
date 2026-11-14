@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { FiArrowLeft, FiBookOpen, FiCheck, FiLock, FiPlay } from "react-icons/fi";
 import VideoPlayer from "../../components/VideoPlayer";
 import { Button } from "../../components/ui/button";
+import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest, resolveMediaUrl } from "../../lib/api";
 
 interface PreviewLesson {
@@ -57,7 +58,7 @@ export default function CoursePreview() {
     return () => controller.abort();
   }, [courseId, id, instructorPreview]);
 
-  if (loading) return <p className="rounded-2xl border border-line bg-surface p-8 text-center text-sm text-mist">Loading package preview…</p>;
+  if (loading) return <LoadingState label="Loading course preview..." />;
   if (!course) {
     return <section className="rounded-2xl border border-line bg-surface p-8 text-center"><h1 className="font-display text-xl font-semibold text-fog">Package unavailable</h1><p role="alert" className="mt-2 text-sm text-coral">{error || "This package is not available."}</p><Link to="/dashboard" className="mt-5 inline-flex text-sm text-cyan hover:underline">Back to catalog</Link></section>;
   }

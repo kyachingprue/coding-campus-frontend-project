@@ -23,6 +23,7 @@ import {
 import { FcGraduationCap } from 'react-icons/fc'
 import { updateProfile, updateProfileImage } from '../../features/auth/authSlice'
 import { Input, Label } from '../../components/ui/input'
+import toast from 'react-hot-toast'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent } from '../../components/ui/card'
 import type { IconType } from 'react-icons'
@@ -282,14 +283,16 @@ export default function Profile() {
     e.target.value = ''
     if (!file) return
     if (!isImageFile(file) || file.size > 5 * 1024 * 1024) {
-      alert('Choose a supported image file smaller than 5MB.')
+      toast.error('Choose a supported image file smaller than 5MB.')
       return
     }
+    const toastId = toast.loading('Uploading your profile photo...')
     try {
       const uploadedUser = await dispatch(updateProfileImage(file, 'avatar'))
       updateField('profileImage', uploadedUser.profileImage ?? '')
+      toast.success('Profile photo updated.', { id: toastId })
     } catch (error: unknown) {
-      alert(error instanceof Error ? error.message : 'Unable to upload profile image.')
+      toast.error(error instanceof Error ? error.message : 'Unable to upload profile image.', { id: toastId })
     }
   }
 
@@ -300,14 +303,16 @@ export default function Profile() {
     e.target.value = ''
     if (!file) return
     if (!isImageFile(file) || file.size > 5 * 1024 * 1024) {
-      alert('Choose a supported image file smaller than 5MB.')
+      toast.error('Choose a supported image file smaller than 5MB.')
       return
     }
+    const toastId = toast.loading('Uploading your profile cover...')
     try {
       const uploadedUser = await dispatch(updateProfileImage(file, 'cover'))
       updateField('bannerImage', uploadedUser.bannerImage ?? '')
+      toast.success('Profile cover updated.', { id: toastId })
     } catch (error: unknown) {
-      alert(error instanceof Error ? error.message : 'Unable to upload cover image.')
+      toast.error(error instanceof Error ? error.message : 'Unable to upload cover image.', { id: toastId })
     }
   }
 
@@ -340,12 +345,13 @@ export default function Profile() {
       })
     )
     if (!result.ok) {
-      alert(result.error)
+      toast.error(result.error || 'Unable to save profile changes.')
       return
     }
 
     setSaved(true)
     setEditorOpen(false)
+    toast.success('Your profile has been saved.')
 
     setTimeout(() => {
       setSaved(false)

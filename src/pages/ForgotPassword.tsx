@@ -4,6 +4,7 @@ import { FiArrowLeft, FiMail } from "react-icons/fi";
 import { apiRequest } from "../lib/api";
 import { Button } from "../components/ui/button";
 import { Input, Label } from "../components/ui/input";
+import toast from "react-hot-toast";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -22,8 +23,11 @@ export default function ForgotPassword() {
         body: JSON.stringify({ email }),
       });
       setMessage(result.message);
+      toast.success(result.message || "Password reset instructions are on their way.");
     } catch (requestError: unknown) {
-      setError(requestError instanceof Error ? requestError.message : "Unable to send the reset email.");
+      const errorMessage = requestError instanceof Error ? requestError.message : "Unable to send the reset email.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setSending(false);
     }

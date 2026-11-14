@@ -7,6 +7,7 @@ import { DemandBarChart } from "./AdminCharts";
 import { AdminChartPanel } from "./AdminUI";
 import type { AdminAnalytics, AdminCourse } from "./types";
 import { useAdminQuery } from "./useAdminQuery";
+import toast from "react-hot-toast";
 
 export default function AdminCoursesPage() {
   const { data, loading, error, refresh } = useAdminQuery<{ courses: AdminCourse[] }>("/courses/admin/all");
@@ -38,10 +39,14 @@ export default function AdminCoursesPage() {
         method: "PATCH",
         body: JSON.stringify({ isPublished: !course.isPublished }),
       });
-      setNotice(`${course.name} is now ${course.isPublished ? "a draft" : "published"}.`);
+      const message = `${course.name} is now ${course.isPublished ? "a draft" : "published"}.`;
+      setNotice(message);
+      toast.success(message);
       refresh();
     } catch (requestError: unknown) {
-      setNotice(requestError instanceof Error ? requestError.message : "Unable to update this course.");
+      const message = requestError instanceof Error ? requestError.message : "Unable to update this course.";
+      setNotice(message);
+      toast.error(message);
     } finally {
       setBusyId("");
     }

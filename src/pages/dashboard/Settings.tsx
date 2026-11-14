@@ -23,6 +23,7 @@ import { Button } from '../../components/ui/button'
 import { useTheme } from '../../app/useTheme'
 import type { IconType } from 'react-icons'
 import type { PropsWithChildren } from 'react'
+import toast from 'react-hot-toast'
 
 /* Toggle */
 
@@ -276,7 +277,7 @@ export default function Settings() {
     setSettings(DEFAULT_SETTINGS)
     setShowDeleteModal(false)
 
-    alert('Your local Code Campus data has been removed.')
+    toast.success('Your local Code Campus data has been removed.')
   }
 
   return (
