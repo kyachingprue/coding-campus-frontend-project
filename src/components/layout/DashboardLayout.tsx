@@ -261,7 +261,7 @@ export default function DashboardLayout() {
           </div>
 
           <div className="flex items-center gap-1 sm:gap-2">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:static sm:translate-x-0 sm:translate-y-0">
+            <div className="relative">
               <button
                 onClick={toggleNotifications}
                 className="relative flex h-10 w-10 items-center justify-center rounded-xl text-mist transition-colors hover:bg-surface-2 hover:text-fog"
@@ -277,15 +277,15 @@ export default function DashboardLayout() {
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    className="absolute left-1/2 z-30 mt-2 w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl sm:left-auto sm:right-0 sm:translate-x-0"
+                    className="fixed right-2 top-20 z-50 flex max-h-[calc(100dvh-6rem)] w-[min(22rem,calc(100vw-1rem))] flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl sm:absolute sm:right-0 sm:top-full sm:mt-2"
                   >
-                    <div className="flex items-center justify-between border-b border-line px-4 py-3"><div><p className="text-sm font-semibold text-fog">Notifications</p><p className="text-xs text-mist">{unreadCount ? `${unreadCount} new course update${unreadCount === 1 ? "" : "s"}` : "You're all caught up"}</p></div><Link to="/dashboard/learning" onClick={() => setNotificationsOpen(false)} className="text-xs font-medium text-cyan hover:underline">My Learning</Link></div>
+                    <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3"><div><p className="text-sm font-semibold text-fog">Notifications</p><p className="text-xs text-mist">{unreadCount ? `${unreadCount} new course update${unreadCount === 1 ? "" : "s"}` : "You're all caught up"}</p></div><Link to="/dashboard/learning" onClick={() => setNotificationsOpen(false)} className="text-xs font-medium text-cyan hover:underline">My Learning</Link></div>
                     {notificationError && <p role="alert" className="border-b border-line px-4 py-3 text-xs text-coral">{notificationError}</p>}
-                    <div className="max-h-80 overflow-y-auto">
-                      {notifications.map((notification) => <Link key={notification.id} to={`/dashboard/learning/${encodeURIComponent(notification.courseId)}`} onClick={() => setNotificationsOpen(false)} className="flex gap-3 border-b border-line/70 px-4 py-3 transition hover:bg-surface-2/70 last:border-0"><span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan/10 text-cyan"><FiBookOpen size={15} /></span><span className="min-w-0 flex-1"><span className="block text-xs font-semibold text-fog">{notification.title}</span><span className="mt-1 block text-xs leading-relaxed text-mist">{notification.description}</span><span className="mt-1.5 block text-[10px] text-mist/70">{new Date(notification.createdAt).toLocaleString()}</span></span>{!seenNotifications.includes(notification.id) && <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-cyan" />}</Link>)}
+                    <div className="min-h-0 max-h-80 flex-1 overflow-y-auto">
+                      {notifications.map((notification) => <Link key={notification.id} to={`/dashboard/learning/${encodeURIComponent(notification.courseId)}`} onClick={() => setNotificationsOpen(false)} className="flex gap-3 border-b border-line/70 px-4 py-3 transition hover:bg-surface-2/70 last:border-0"><span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan/10 text-cyan"><FiBookOpen size={15} /></span><span className="min-w-0 flex-1"><span className="block break-words text-xs font-semibold text-fog">{notification.title}</span><span className="mt-1 block break-words text-xs leading-relaxed text-mist">{notification.description}</span><span className="mt-1.5 block break-words text-[10px] text-mist/70">{new Date(notification.createdAt).toLocaleString()}</span></span>{!seenNotifications.includes(notification.id) && <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-cyan" />}</Link>)}
                       {!notifications.length && !notificationError && <p className="px-4 py-7 text-center text-sm text-mist">No course updates yet.</p>}
                     </div>
-                    <div className="border-t border-line px-4 py-2.5"><p className="flex items-center gap-1.5 text-[11px] text-mist"><FiCheck className="text-cyan" /> Updates automatically every minute</p></div>
+                    <div className="shrink-0 border-t border-line px-4 py-2.5"><p className="flex items-center gap-1.5 text-[11px] text-mist"><FiCheck className="text-cyan" /> Updates automatically every minute</p></div>
                   </motion.div>
                 )}
               </AnimatePresence>

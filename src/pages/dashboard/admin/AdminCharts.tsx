@@ -25,10 +25,18 @@ export function RevenueLineChart({ data }: { data: AdminAnalytics["monthly"] }) 
 export function DemandBarChart({ data }: { data: AdminAnalytics["topCourses"] }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data} layout="vertical" margin={{ top: 4, right: 16, left: 8, bottom: 4 }}>
+      <BarChart data={data} layout="vertical" margin={{ top: 4, right: 8, left: 0, bottom: 4 }}>
         <CartesianGrid stroke="#263449" strokeDasharray="3 3" horizontal={false} />
         <XAxis type="number" tick={{ fill: "#94a3b8", fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
-        <YAxis type="category" dataKey="name" width={100} tick={{ fill: "#cbd5e1", fontSize: 11 }} axisLine={false} tickLine={false} />
+        <YAxis
+          type="category"
+          dataKey="name"
+          width={96}
+          tick={{ fill: "#cbd5e1", fontSize: 10 }}
+          tickFormatter={(name: string) => name.length > 16 ? `${name.slice(0, 15)}…` : name}
+          axisLine={false}
+          tickLine={false}
+        />
         <Tooltip contentStyle={tooltipStyle} />
         <Bar dataKey="enrollments" name="Enrollments" radius={[0, 6, 6, 0]}>{data.map((_entry, index) => <Cell key={index} fill={colors[index % colors.length]} />)}</Bar>
       </BarChart>

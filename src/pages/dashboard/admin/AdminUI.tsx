@@ -72,9 +72,9 @@ export function AdminChartPanel({ title, description, children, className = "" }
   className?: string;
 }) {
   return (
-    <section className={`${panelClass} ${className}`}>
+    <section className={`${panelClass} min-w-0 ${className}`}>
       <div className="mb-5"><h2 className="font-display text-base font-semibold text-fog">{title}</h2><p className="mt-1 text-xs text-mist">{description}</p></div>
-      <div className="h-72 w-full">{children}</div>
+      <div className="h-72 w-full min-w-0">{children}</div>
     </section>
   );
 }

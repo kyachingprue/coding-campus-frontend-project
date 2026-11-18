@@ -109,14 +109,14 @@ export default function Billing() {
   }), [invoices, query, filter]);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-7 pb-8">
+    <div className="mx-auto min-w-0 max-w-6xl space-y-7 pb-8">
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan">Account center</p>
-          <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-fog">Billing & plans</h1>
+          <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-fog sm:text-3xl">Billing & plans</h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-mist">Review your course payments and keep track of your billing history.</p>
         </div>
-        <Link to="/contact" className="inline-flex w-fit items-center gap-2 text-sm font-medium text-mist transition hover:text-cyan">
+        <Link to="/contact" className="inline-flex w-fit shrink-0 items-center gap-2 text-sm font-medium text-mist transition hover:text-cyan">
           <FiLifeBuoy size={16} /> Billing support <FiArrowRight size={14} />
         </Link>
       </header>
@@ -173,14 +173,14 @@ export default function Billing() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search invoices"
                 aria-label="Search invoices"
-                className="h-10 w-full rounded-lg border border-line bg-surface text-sm text-fog outline-none placeholder:text-mist text-center px-3 focus:border-cyan sm:w-52"
+                className="h-10 w-full min-w-0 rounded-lg border border-line bg-surface px-3 text-sm text-fog outline-none placeholder:text-mist focus:border-cyan sm:w-52"
               />
             </label>
             <select
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
               aria-label="Filter invoices by status"
-              className="h-10 rounded-lg border border-line bg-surface px-3 text-sm text-fog outline-none focus:border-cyan"
+              className="h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-fog outline-none focus:border-cyan sm:w-auto"
             >
               <option value="all">All statuses</option>
               <option value="paid">Paid</option>
@@ -234,7 +234,7 @@ export default function Billing() {
                   <article key={invoice.id} className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="font-mono text-xs text-cyan">{invoice.id}</p>
+                        <p className="break-all font-mono text-xs text-cyan">{invoice.id}</p>
                         <p className="mt-1 truncate text-sm font-medium text-fog">{invoice.description}</p>
                         <p className="mt-1 text-xs text-mist">{invoice.date}</p>
                       </div>

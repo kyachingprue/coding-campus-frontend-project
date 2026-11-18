@@ -247,23 +247,23 @@ export default function RoleDashboardLayout({ role }: RoleDashboardLayoutProps) 
                     {unreadCount > 0 && <span className="absolute right-1 top-1 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-cyan px-1 text-[10px] font-bold text-ink">{unreadCount > 9 ? "9+" : unreadCount}</span>}
                   </button>
                   {notificationsOpen && (
-                    <div className="absolute right-0 z-30 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl">
-                      <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                    <div className="fixed right-2 top-20 z-50 flex max-h-[calc(100dvh-6rem)] w-[min(22rem,calc(100vw-1rem))] flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl sm:absolute sm:right-0 sm:top-full sm:mt-2">
+                      <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3">
                         <div><p className="text-sm font-semibold text-fog">Notifications</p><p className="text-xs text-mist">{unreadCount ? `${unreadCount} new sale${unreadCount === 1 ? "" : "s"}` : "You're all caught up"}</p></div>
                         <Link to={role === "admin" ? "/admin/payments" : "/instructor/payments"} onClick={() => setNotificationsOpen(false)} className="text-xs font-medium text-cyan hover:underline">Payments</Link>
                       </div>
                       {notificationError && <p role="alert" className="border-b border-line px-4 py-3 text-xs text-coral">{notificationError}</p>}
-                      <div className="max-h-80 overflow-y-auto">
+                      <div className="min-h-0 max-h-80 flex-1 overflow-y-auto">
                         {notifications.map((notification) => (
                           <div key={notification.id} className="flex gap-3 border-b border-line/70 px-4 py-3 last:border-0">
                             <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300"><FiCreditCard size={15} /></span>
-                            <div className="min-w-0 flex-1"><p className="text-xs font-semibold text-fog">{notification.title}</p><p className="mt-1 text-xs leading-relaxed text-mist">{notification.description}</p><p className="mt-1.5 text-[10px] text-mist/70">{new Date(notification.createdAt).toLocaleString()}</p></div>
+                            <div className="min-w-0 flex-1"><p className="break-words text-xs font-semibold text-fog">{notification.title}</p><p className="mt-1 break-words text-xs leading-relaxed text-mist">{notification.description}</p><p className="mt-1.5 break-words text-[10px] text-mist/70">{new Date(notification.createdAt).toLocaleString()}</p></div>
                             {!seenNotifications.includes(notification.id) && <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-cyan" />}
                           </div>
                         ))}
                         {!notifications.length && !notificationError && <p className="px-4 py-7 text-center text-sm text-mist">No new payment notifications yet.</p>}
                       </div>
-                      <div className="border-t border-line px-4 py-2.5"><p className="flex items-center gap-1.5 text-[11px] text-mist"><FiCheck className="text-cyan" /> Updates automatically every minute</p></div>
+                      <div className="shrink-0 border-t border-line px-4 py-2.5"><p className="flex items-center gap-1.5 text-[11px] text-mist"><FiCheck className="text-cyan" /> Updates automatically every minute</p></div>
                     </div>
                   )}
                 </div>

@@ -114,7 +114,7 @@ export default function InstructorOverview() {
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <article className="rounded-2xl border border-line bg-surface p-5 sm:p-6">
+        <article className="min-w-0 rounded-2xl border border-line bg-surface p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <div><h2 className="font-display text-lg font-semibold text-fog">Recent course packages</h2><p className="mt-1 text-sm text-mist">Keep your catalog fresh and organized.</p></div>
             <Link to="/instructor/courses" className="shrink-0 text-xs font-semibold text-cyan hover:underline">View all</Link>
@@ -122,12 +122,12 @@ export default function InstructorOverview() {
           {workspace.courses.length ? (
             <div className="mt-5 divide-y divide-line">
               {workspace.courses.slice(0, 4).map((course) => (
-                <div key={course._id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+                <div key={course._id} className="flex min-w-0 flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-2 text-cyan">
                     {course.imageUrl ? <img src={course.imageUrl} alt="" className="h-full w-full object-cover" /> : <FiBookOpen />}
                   </span>
-                  <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-fog">{course.name}</p><p className="mt-0.5 text-xs text-mist">{course.category} · {course.lessons} lessons</p></div>
-                  <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${course.isPublished ? "bg-emerald-500/10 text-emerald-500" : "bg-amber/10 text-amber"}`}>{course.isPublished ? "Published" : "Draft"}</span>
+                  <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-fog">{course.name}</p><p className="mt-0.5 break-words text-xs text-mist">{course.category} · {course.lessons} lessons</p></div>
+                  <span className={`ml-auto shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium ${course.isPublished ? "bg-emerald-500/10 text-emerald-500" : "bg-amber/10 text-amber"}`}>{course.isPublished ? "Published" : "Draft"}</span>
                 </div>
               ))}
             </div>
