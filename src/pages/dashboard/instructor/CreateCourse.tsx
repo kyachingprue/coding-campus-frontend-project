@@ -7,6 +7,7 @@ import { apiRequest, uploadRequest } from "../../../lib/api";
 import toast from "react-hot-toast";
 import { courseCategories } from "../../../lib/courseCategories";
 import type { InstructorCourse } from "./shared";
+import { useAppSelector } from "../../../app/hooks";
 
 interface LessonDraft {
   id: string;
@@ -41,6 +42,8 @@ function toCourseId(value: string) {
 }
 
 export default function CreateCourse() {
+  const isAdmin = useAppSelector((state) => state.auth.user?.role === "admin");
+  const dashboardBase = isAdmin ? "/admin" : "/instructor";
   const [searchParams] = useSearchParams();
   const [form, setForm] = useState({
     courseId: "",
@@ -73,12 +76,12 @@ export default function CreateCourse() {
   useEffect(() => {
     if (!editingId) return;
     let active = true;
-    apiRequest<{ courses: InstructorCourse[] }>("/courses/instructor/mine")
+    apiRequest<{ courses: InstructorCourse[] }>(isAdmin ? "/courses/admin/all" : "/courses/instructor/mine")
       .then(({ courses }) => {
         const course = courses.find((item) => item._id === editingId);
         if (!active) return;
         if (!course) {
-          setError("The course could not be found in your instructor workspace.");
+          setError("The course could not be found in this workspace.");
           return;
         }
         setForm({
@@ -121,7 +124,7 @@ export default function CreateCourse() {
         if (active) setLoadingEdit(false);
       });
     return () => { active = false; };
-  }, [editingId]);
+  }, [editingId, isAdmin]);
 
   function updateForm(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = event.target;
@@ -303,10 +306,10 @@ export default function CreateCourse() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <Link to="/instructor/courses" className="inline-flex items-center gap-2 text-sm text-mist transition hover:text-cyan"><FiArrowLeft size={15} /> Back to My courses</Link>
+      <Link to={`${dashboardBase}/courses`} className="inline-flex items-center gap-2 text-sm text-mist transition hover:text-cyan"><FiArrowLeft size={15} /> Back to courses</Link>
       <header className="relative isolate overflow-hidden rounded-3xl border border-cyan/20 bg-surface p-6 shadow-xl shadow-black/5 sm:p-8">
         <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-2/3 bg-gradient-to-l from-cyan/10 via-violet/5 to-transparent" />
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan">Instructor workspace / Course builder</p>
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan">{isAdmin ? "Admin console" : "Instructor workspace"} / Course builder</p>
         <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div><h1 className="font-display text-2xl font-semibold tracking-tight text-fog sm:text-3xl">{editingId ? "Edit your package" : "Create a new package"}</h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-mist">Shape a learning experience with clear outcomes and an ordered curriculum. Paste a Google Drive video sharing link for each lesson.</p>
@@ -317,7 +320,7 @@ export default function CreateCourse() {
       {loadingEdit && <LoadingState label="Loading the selected course..." />}
       {error && <p role="alert" className="rounded-xl border border-coral/30 bg-coral/10 p-4 text-sm leading-relaxed text-coral">{error}</p>}
       {notice && <p role="status" className="rounded-xl border border-cyan/25 bg-cyan/10 p-4 text-sm leading-relaxed text-cyan">{notice}</p>}
-      {createdCourse && <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3"><span className="inline-flex items-center gap-2 text-sm text-fog"><FiCheck className="text-cyan" /> Draft saved: <strong>{createdCourse.name}</strong></span><Link to={`/instructor/courses/${encodeURIComponent(createdCourse._id)}/preview`} className="text-sm font-semibold text-cyan hover:underline">Preview draft</Link></div>}
+      {createdCourse && <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3"><span className="inline-flex items-center gap-2 text-sm text-fog"><FiCheck className="text-cyan" /> Draft saved: <strong>{createdCourse.name}</strong></span><Link to={`${dashboardBase}/courses/${encodeURIComponent(createdCourse._id)}/preview`} className="text-sm font-semibold text-cyan hover:underline">Preview draft</Link></div>}
 
       <form onSubmit={(event) => void saveDraft(event)} className="space-y-8 rounded-3xl border border-line bg-surface p-4 shadow-xl shadow-black/5 sm:p-7 lg:p-8">
         <section>

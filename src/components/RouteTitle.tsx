@@ -13,6 +13,7 @@ const routeTitles: Record<string, string> = {
   "/dashboard": "Student Dashboard",
   "/dashboard/learning": "My Learning",
   "/dashboard/practice": "Practice Lab",
+  "/dashboard/support": "Live Support",
   "/dashboard/profile": "Profile",
   "/dashboard/billing": "Billing",
   "/dashboard/settings": "Settings",
@@ -22,13 +23,17 @@ const routeTitles: Record<string, string> = {
   "/instructor/courses/create": "Create Course",
   "/instructor/payments": "Payments",
   "/instructor/analytics": "Analytics",
+  "/instructor/support": "Live Support",
   "/instructor/profile": "Instructor Profile",
   "/instructor/settings": "Instructor Settings",
   "/admin": "Admin Dashboard",
   "/admin/dashboard": "Admin Dashboard",
   "/admin/students": "Students",
   "/admin/instructors": "Instructors",
+  "/admin/users": "User & Role Management",
+  "/admin/support": "Live Support",
   "/admin/courses": "Courses",
+  "/admin/courses/create": "Create Course",
   "/admin/analytics": "Analytics",
   "/admin/payments": "Payments",
   "/admin/settings": "Admin Settings",
@@ -41,6 +46,7 @@ const dynamicRouteTitles: Array<[RegExp, string]> = [
   [/^\/dashboard\/courses\/[^/]+$/, "Course Preview"],
   [/^\/dashboard\/checkout\/[^/]+$/, "Course Checkout"],
   [/^\/instructor\/courses\/[^/]+\/preview$/, "Course Preview"],
+  [/^\/admin\/courses\/[^/]+\/preview$/, "Course Preview"],
 ];
 
 function getRouteTitle(pathname: string): string {

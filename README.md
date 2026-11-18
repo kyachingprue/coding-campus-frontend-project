@@ -36,6 +36,10 @@ available at `/admin/students`, `/admin/instructors`, `/admin/courses`,
 
 Instructor sections are available at `/instructor/courses`,
 `/instructor/courses/create`, `/instructor/payments`, `/instructor/analytics`,
-`/instructor/profile`, and `/instructor/settings`. Course video lessons are
+`/instructor/profile`, `/instructor/settings`, and `/instructor/support`.
+Students can access live support at `/dashboard/support`, and admins at
+`/admin/support`. Support calls are invited to role-eligible campus users and
+use the free public Jitsi Meet service; camera and microphone access are
+requested by the browser when a user joins. Course video lessons are
 uploaded to Cloudinary and are playable from an enrolled student's
 `/dashboard/learning/:courseId` page.

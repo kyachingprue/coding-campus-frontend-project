@@ -29,10 +29,13 @@ const InstructorPayments = lazy(() => import("./pages/dashboard/instructor/Payme
 const InstructorAnalytics = lazy(() => import("./pages/dashboard/instructor/Analytics"));
 const InstructorProfile = lazy(() => import("./pages/dashboard/instructor/Profile"));
 const InstructorSettings = lazy(() => import("./pages/dashboard/instructor/Settings"));
+const Support = lazy(() => import("./pages/dashboard/Support"));
 const AdminOverviewPage = lazy(() => import("./pages/dashboard/admin/AdminOverviewPage"));
 const AdminStudentsPage = lazy(() => import("./pages/dashboard/admin/AdminStudentsPage"));
 const AdminInstructorsPage = lazy(() => import("./pages/dashboard/admin/AdminInstructorsPage"));
 const AdminCoursesPage = lazy(() => import("./pages/dashboard/admin/AdminCoursesPage"));
+const AdminUsersPage = lazy(() => import("./pages/dashboard/admin/AdminUsersPage"));
+const AdminCourseBuilder = lazy(() => import("./pages/dashboard/instructor/CreateCourse"));
 const AdminAnalyticsPage = lazy(() => import("./pages/dashboard/admin/AdminAnalyticsPage"));
 const AdminPaymentsPage = lazy(() => import("./pages/dashboard/admin/AdminPaymentsPage"));
 const AdminSettingsPage = lazy(() => import("./pages/dashboard/admin/AdminSettingsPage"));
@@ -111,6 +114,7 @@ export default function App() {
           <Route path="courses/:courseId" element={<CoursePreview />} />
           <Route path="checkout/:courseId" element={<Checkout />} />
           <Route path="practice" element={<Practice />} />
+          <Route path="support" element={<Suspense fallback={<LoadingState label="Opening live support..." />}><Support /></Suspense>} />
           <Route path="profile" element={<Profile />} />
           <Route path="billing" element={<Billing />} />
           <Route path="settings" element={<Settings />} />
@@ -127,6 +131,7 @@ export default function App() {
           <Route path="courses/:id/preview" element={<CoursePreview />} />
           <Route path="payments" element={<Suspense fallback={<LoadingState label="Loading payments..." />}><InstructorPayments /></Suspense>} />
           <Route path="analytics" element={<Suspense fallback={<LoadingState label="Loading analytics..." />}><InstructorAnalytics /></Suspense>} />
+          <Route path="support" element={<Suspense fallback={<LoadingState label="Opening live support..." />}><Support /></Suspense>} />
           <Route path="profile" element={<Suspense fallback={<LoadingState label="Loading your profile..." />}><InstructorProfile /></Suspense>} />
           <Route path="settings" element={<Suspense fallback={<LoadingState label="Loading settings..." />}><InstructorSettings /></Suspense>} />
           <Route path="*" element={<Navigate to="/instructor/dashboard" replace />} />
@@ -140,11 +145,14 @@ export default function App() {
           <Route path="students" element={<Suspense fallback={<LoadingState label="Loading student records..." />}><AdminStudentsPage /></Suspense>} />
           <Route path="instructors" element={<Suspense fallback={<LoadingState label="Loading instructor records..." />}><AdminInstructorsPage /></Suspense>} />
           <Route path="courses" element={<Suspense fallback={<LoadingState label="Loading course catalog..." />}><AdminCoursesPage /></Suspense>} />
+          <Route path="courses/create" element={<Suspense fallback={<LoadingState label="Opening the course builder..." />}><AdminCourseBuilder /></Suspense>} />
+          <Route path="courses/:id/preview" element={<CoursePreview />} />
+          <Route path="users" element={<Suspense fallback={<LoadingState label="Loading user accounts..." />}><AdminUsersPage /></Suspense>} />
+          <Route path="support" element={<Suspense fallback={<LoadingState label="Opening live support..." />}><Support /></Suspense>} />
           <Route path="analytics" element={<Suspense fallback={<LoadingState label="Loading platform analytics..." />}><AdminAnalyticsPage /></Suspense>} />
           <Route path="payments" element={<Suspense fallback={<LoadingState label="Loading payment records..." />}><AdminPaymentsPage /></Suspense>} />
           <Route path="settings" element={<Suspense fallback={<LoadingState label="Loading platform settings..." />}><AdminSettingsPage /></Suspense>} />
           <Route path="profile" element={<Profile />} />
-          <Route path="users" element={<Navigate to="/admin/students" replace />} />
           <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
         </Route>
       </Route>

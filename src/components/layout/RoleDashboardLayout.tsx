@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   FiBookOpen, FiCheck, FiCreditCard, FiGrid, FiLogOut, FiMenu, FiMonitor, FiMoon,
   FiSettings, FiSun, FiTrendingUp, FiUserCheck, FiUsers, FiVideo, FiX, FiBell,
-  FiUser,
+  FiUser, FiShield, FiLifeBuoy,
 } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../features/auth/authSlice";
@@ -19,6 +19,7 @@ const dashboardLinks: Record<Exclude<AppRole, "student">, { to: string; label: s
     { to: "/instructor/dashboard", label: "Overview", icon: FiGrid },
     { to: "/instructor/courses", label: "My courses", icon: FiBookOpen },
     { to: "/instructor/courses/create", label: "Create course", icon: FiVideo },
+    { to: "/instructor/support", label: "Live support", icon: FiLifeBuoy },
     { to: "/instructor/payments", label: "Payments", icon: FiCreditCard },
     { to: "/instructor/analytics", label: "Analytics", icon: FiTrendingUp },
     { to: "/instructor/profile", label: "Profile", icon: FiUser },
@@ -28,6 +29,8 @@ const dashboardLinks: Record<Exclude<AppRole, "student">, { to: string; label: s
     { to: "/admin/dashboard", label: "Overview", icon: FiGrid },
     { to: "/admin/students", label: "Students", icon: FiUsers },
     { to: "/admin/instructors", label: "Instructors", icon: FiUserCheck },
+    { to: "/admin/users", label: "Users & roles", icon: FiShield },
+    { to: "/admin/support", label: "Live support", icon: FiLifeBuoy },
     { to: "/admin/courses", label: "All courses", icon: FiBookOpen },
     { to: "/admin/analytics", label: "Analytics", icon: FiTrendingUp },
     { to: "/admin/payments", label: "Payments", icon: FiCreditCard },

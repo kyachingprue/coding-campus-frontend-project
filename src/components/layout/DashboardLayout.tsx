@@ -50,6 +50,7 @@ const links = [
   { to: "/dashboard", label: "Overview", icon: FiGrid, end: true },
   { to: "/dashboard/learning", label: "My Learning", icon: FiBookOpen },
   { to: "/dashboard/practice", label: "Practice Lab", icon: FiCode },
+  { to: "/dashboard/support", label: "Live support", icon: FiLifeBuoy },
   { to: "/dashboard/profile", label: "Profile", icon: FiUser },
   { to: "/dashboard/billing", label: "Billing", icon: FiCreditCard },
   { to: "/dashboard/settings", label: "Settings", icon: FiSettings },
