@@ -13,6 +13,15 @@ interface VideoPlayerProps {
   onEnded?: (currentTime: number, duration: number) => void;
 }
 
+export function VideoLoadingIndicator() {
+  return (
+    <div role="status" aria-label="Loading video" className="absolute inset-0 z-10 flex items-center justify-center bg-black/25">
+      <span aria-hidden="true" className="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-cyan" />
+      <span className="sr-only">Loading video</span>
+    </div>
+  );
+}
+
 function formatTime(seconds: number) {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
   const minutes = Math.floor(seconds / 60);
@@ -24,6 +33,7 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [buffering, setBuffering] = useState(false);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(0.8);
   const [currentTime, setCurrentTime] = useState(0);
@@ -105,8 +115,23 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
         playsInline
         preload="metadata"
         aria-label={`Video lesson: ${title}`}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
+        onPlay={() => {
+          setPlaying(true);
+          setBuffering(true);
+        }}
+        onPlaying={() => setBuffering(false)}
+        onPause={() => {
+          setPlaying(false);
+          setBuffering(false);
+        }}
+        onWaiting={() => {
+          if (!videoRef.current?.paused) setBuffering(true);
+        }}
+        onStalled={() => {
+          if (!videoRef.current?.paused) setBuffering(true);
+        }}
+        onSeeking={() => setBuffering(true)}
+        onSeeked={() => setBuffering(false)}
         onLoadedMetadata={(event) => {
           const video = event.currentTarget;
           setDuration(video.duration);
@@ -114,6 +139,7 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
           if (initialTime > 0 && initialTime < video.duration) video.currentTime = initialTime;
         }}
         onError={(event) => {
+          setBuffering(false);
           const code = event.currentTarget.error?.code;
           setPlayerError(code === 3 || code === 4
             ? "This video format could not be decoded by your browser."
@@ -124,13 +150,19 @@ export default function VideoPlayer({ src, title, initialTime = 0, onProgress, o
           setCurrentTime(time);
           onProgress?.(time, event.currentTarget.duration);
         }}
-        onEnded={(event) => onEnded?.(event.currentTarget.currentTime, event.currentTarget.duration)}
+        onEnded={(event) => {
+          setPlaying(false);
+          setBuffering(false);
+          onEnded?.(event.currentTarget.currentTime, event.currentTarget.duration);
+        }}
         onClick={(event) => {
           event.stopPropagation();
           togglePlayback();
         }}
         className="relative z-0 h-full w-full object-contain"
       />
+
+      {buffering && <VideoLoadingIndicator />}
 
       {!playing && (
         <button

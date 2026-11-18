@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiBookOpen, FiCheck, FiChevronLeft, FiChevronRight, FiLock, FiPlay, FiVideo } from "react-icons/fi";
-import VideoPlayer from "../../components/VideoPlayer";
+import VideoPlayer, { VideoLoadingIndicator } from "../../components/VideoPlayer";
 import LoadingState from "../../components/ui/LoadingState";
 import { apiRequest, resolveMediaUrl } from "../../lib/api";
 
@@ -169,7 +169,7 @@ export default function CourseDetail() {
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(17rem,0.75fr)]">
         <article className="min-w-0 overflow-hidden rounded-2xl border border-line bg-surface">
           {selectedLesson ? <>
-            <div className="border-b border-line p-4 sm:px-5"><p className="text-xs font-medium uppercase tracking-wide text-cyan">Now playing</p><h2 className="mt-1 truncate font-display text-lg font-semibold text-fog">{selectedLesson.title}</h2></div>
+            <div className="border-b border-line p-4 sm:px-5"><h2 className="truncate font-display text-lg font-semibold text-fog">{selectedLesson.title}</h2></div>
             <div className="relative aspect-video bg-black">
               {videoUrl ? <VideoPlayer
                 key={videoUrl}
@@ -179,7 +179,7 @@ export default function CourseDetail() {
                 onProgress={(currentTime, duration) => handleTimeUpdate(selectedLesson.id, currentTime, duration)}
                 onEnded={(currentTime, duration) => reportProgress(selectedLesson.id, currentTime, duration)}
               />
-                : <div className="flex h-full items-center justify-center text-sm text-mist">{videoLoading ? "Preparing secure playback…" : "Video unavailable"}</div>}
+                : videoLoading ? <VideoLoadingIndicator /> : <div className="flex h-full items-center justify-center text-sm text-mist">Video unavailable</div>}
             </div>
             <div className="flex items-center justify-between gap-3 border-t border-line p-4 sm:px-5">
               <button
